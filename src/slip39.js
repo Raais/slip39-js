@@ -164,7 +164,7 @@ class Slip39 {
       }
 
       // Generate leaf members, means their `m` is `0`
-      const members = Array2().slip39Generate(m, () => [n, 0, d]);
+      const members = new Array2().slip39Generate(m, () => [n, 0, d]);
 
       const node = new Slip39Node(idx, d);
       const branch = this.buildRecursive(

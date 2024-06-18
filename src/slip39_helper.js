@@ -222,7 +222,7 @@ function crypt(
 
   const salt = getSalt(identifier, extendableBackupFlag);
 
-  let range = Array2().slip39Generate(ROUND_COUNT);
+  let range = new Array2().slip39Generate(ROUND_COUNT);
   range = encrypt ? range : range.reverse();
 
   range.forEach((round) => {
@@ -264,7 +264,7 @@ function splitSecret(threshold, shareCount, sharedSecret) {
   }
   //  If the threshold is 1, then the digest of the shared secret is not used.
   if (threshold === 1) {
-    return Array2().slip39Generate(shareCount, () => sharedSecret);
+    return new Array2().slip39Generate(shareCount, () => sharedSecret);
   }
 
   const randomShareCount = threshold - 2;
@@ -275,7 +275,7 @@ function splitSecret(threshold, shareCount, sharedSecret) {
   let baseShares = new Map();
   let shares = [];
   if (randomShareCount) {
-    shares = Array2().slip39Generate(randomShareCount, () =>
+    shares = new Array2().slip39Generate(randomShareCount, () =>
       randomBytes(sharedSecret.length),
     );
     shares.forEach((item, idx) => {
@@ -312,7 +312,7 @@ function xor(a, b) {
       `Invalid padding in mnemonic or insufficient length of mnemonics (${a.length} or ${b.length})`,
     );
   }
-  return Array2().slip39Generate(a.length, (i) => a[i] ^ b[i]);
+  return new Array2().slip39Generate(a.length, (i) => a[i] ^ b[i]);
 }
 
 function getSalt(identifier, extendableBackupFlag) {
@@ -350,7 +350,7 @@ function interpolate(shares, x) {
     logProd = logProd + LOG_TABLE[k ^ x];
   });
 
-  let results = Array2().slip39Generate(
+  let results = new Array2().slip39Generate(
     sharesValueLengths.values().next().value,
     () => 0,
   );
@@ -413,9 +413,9 @@ function rs1024CreateChecksum(data, extendableBackupFlag) {
   const values = get_customization_string(extendableBackupFlag)
     .slip39EncodeHex()
     .concat(data)
-    .concat(Array2().slip39Generate(CHECKSUM_WORDS_LENGTH, () => 0));
+    .concat(new Array2().slip39Generate(CHECKSUM_WORDS_LENGTH, () => 0));
   const polymod = rs1024Polymod(values) ^ 1;
-  const result = Array2()
+  const result = new Array2()
     .slip39Generate(CHECKSUM_WORDS_LENGTH, (i) => (polymod >> (10 * i)) & 1023)
     .reverse();
 
@@ -450,7 +450,7 @@ function intFromIndices(indices) {
 //
 function intToIndices(value, length, bits) {
   const mask = BigInt((1 << bits) - 1);
-  const result = Array2().slip39Generate(length, (i) =>
+  const result = new Array2().slip39Generate(length, (i) =>
     parseInt((value >> (BigInt(i) * BigInt(bits))) & mask, 10),
   );
   return result.reverse();
