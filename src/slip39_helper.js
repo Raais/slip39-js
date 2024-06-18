@@ -75,6 +75,7 @@ const SECRET_INDEX = 255;
 //
 // Helper functions for SLIP39 implementation.
 //
+/*
 String.prototype.slip39EncodeHex = function () {
   let bytes = [];
   for (let i = 0; i < this.length; ++i) {
@@ -114,6 +115,7 @@ Array.prototype.toByteArray = function (hexString) {
   }
   return this;
 };
+*/
 
 const BIGINT_WORD_BITS = BigInt(8);
 
